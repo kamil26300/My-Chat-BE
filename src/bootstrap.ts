@@ -87,14 +87,6 @@ module.exports = async ({ strapi }) => {
       }
     });
 
-    // Handle typing status
-    socket.on("typing", (isTyping) => {
-      socket.broadcast.emit("userTyping", {
-        username: socket.user.username,
-        isTyping,
-      });
-    });
-
     // Handle errors
     socket.on("error", (error) => {
       console.error("Socket error:", error);

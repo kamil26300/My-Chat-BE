@@ -64,14 +64,6 @@ module.exports = (config, { strapi }) => {
           }
         });
 
-        // Handle typing status
-        socket.on("typing", (isTyping) => {
-          socket.broadcast.emit("userTyping", {
-            username: socket.user.username,
-            isTyping,
-          });
-        });
-
         socket.on("disconnect", () => {
           console.log("User disconnected:", socket.user.username);
         });
