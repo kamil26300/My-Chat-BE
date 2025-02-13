@@ -15,15 +15,21 @@
       "type": "text",
       "required": true
     },
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "messages"
+    "userId": {
+      "type": "integer",
+      "required": true
     },
     "timestamp": {
       "type": "datetime",
       "required": true
+    },
+    "sessionId": {
+      "type": "string",
+      "required": true
+    },
+    "isServerReply": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
