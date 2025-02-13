@@ -1,15 +1,31 @@
-'use strict';
+"use strict";
 
 module.exports = {
+  async deleteSessionMessages(ctx) {
+    const { sessionId } = ctx.params;
+    
+    try {
+      // Delete all messages for this session
+      await strapi.db.query("api::message.message").deleteMany({
+        where: {
+          sessionId: sessionId,
+        },
+      });
+      
+      return { success: true };
+    } catch (error) {
+      ctx.throw(500, "Error deleting session messages");
+    }
+  },
   async findBySessionAndUser(ctx) {
     const { sessionId, userId } = ctx.query;
     try {
-      const messages = await strapi.db.query('api::message.message').findMany({
+      const messages = await strapi.db.query("api::message.message").findMany({
         where: {
           sessionId: sessionId,
-          userId: parseInt(userId)
+          userId: parseInt(userId),
         },
-        orderBy: { timestamp: 'asc' },
+        orderBy: { timestamp: "asc" },
       });
 
       return messages;

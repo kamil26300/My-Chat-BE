@@ -1,13 +1,19 @@
 module.exports = {
   routes: [
     {
-      method: 'GET',
-      path: '/messages/session',
-      handler: 'custom-message.findBySessionAndUser',
+      method: "GET",
+      path: "/messages/session",
+      handler: "custom-message.findBySessionAndUser",
       config: {
         auth: false,
-        policies: [],
-        middlewares: [],
+      },
+    },
+    {
+      method: "DELETE",
+      path: "/messages/session/:sessionId",
+      handler: "custom-message.deleteSessionMessages",
+      config: {
+        auth: false,
       },
     },
   ],

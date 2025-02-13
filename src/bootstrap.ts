@@ -16,15 +16,19 @@ module.exports = async ({ strapi }) => {
 
   io.use(async (socket, next) => {
     try {
-      const token = socket.handshake.auth.token || 
+      const token =
+        socket.handshake.auth.token ||
         socket.handshake.headers.authorization?.replace("Bearer ", "");
 
       if (!token) {
         return next(new Error("Authentication token missing"));
       }
 
-      const verified = await strapi.plugins["users-permissions"].services.jwt.verify(token);
-      const user = await strapi.plugins["users-permissions"].services.user.fetch(verified.id);
+      const verified =
+        await strapi.plugins["users-permissions"].services.jwt.verify(token);
+      const user = await strapi.plugins[
+        "users-permissions"
+      ].services.user.fetch(verified.id);
 
       if (!user) {
         return next(new Error("User not found"));
@@ -41,57 +45,52 @@ module.exports = async ({ strapi }) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.user.username);
 
+    // In your backend socket handler
     socket.on("sendMessage", async (messageData) => {
-      console.log(messageData)
       try {
-        // Create user message
-        const userMessage = await strapi.entityService.create("api::message.message", {
-          data: {
-            content: messageData.content,
-            userId: socket.user.id,
-            sessionId: messageData.sessionId,
-            timestamp: new Date(),
-            publishedAt: new Date(),
-            isServerReply: false
-          },
-        });
+        console.log("Received message:", messageData);
+        // Save user message
+        const savedMessage = await strapi.entityService.create(
+          "api::message.message",
+          {
+            data: {
+              ...messageData,
+              publishedAt: new Date(),
+            },
+          }
+        );
 
-        // Create server reply (echo message)
-        const serverReply = await strapi.entityService.create("api::message.message", {
-          data: {
-            content: messageData.content,
-            userId: socket.user.id,
-            sessionId: messageData.sessionId,
-            timestamp: new Date(),
-            publishedAt: new Date(),
-            isServerReply: true
-          },
-        });
-
-        // Emit both messages to the specific user
+        // Emit saved message
         socket.emit("message", {
-          id: userMessage.id,
-          content: userMessage.content,
-          username: socket.user.username,
-          timestamp: userMessage.timestamp,
-          sessionId: messageData.sessionId,
-          isServerReply: false
+          ...savedMessage,
+          isServerReply: false,
         });
 
-        // Emit server reply after a short delay to simulate processing
+        // Create and emit server reply
+        const serverReply = await strapi.entityService.create(
+          "api::message.message",
+          {
+            data: {
+              content: messageData.content,
+              sessionId: messageData.sessionId,
+              userId: messageData.userId,
+              timestamp: new Date().toISOString(),
+              isServerReply: true,
+              publishedAt: new Date(),
+            },
+          }
+        );
+
+        // Emit server reply after a short delay
         setTimeout(() => {
           socket.emit("message", {
-            id: serverReply.id,
-            content: serverReply.content,
-            username: "Server",
-            timestamp: serverReply.timestamp,
-            sessionId: messageData.sessionId,
-            isServerReply: true
+            ...serverReply,
+            isServerReply: true,
           });
-        }, 500);
+        }, 1000);
       } catch (error) {
-        console.error("Error saving message:", error);
-        socket.emit("error", "Failed to save message");
+        console.error("Error handling message:", error);
+        socket.emit("error", "Failed to process message");
       }
     });
 
