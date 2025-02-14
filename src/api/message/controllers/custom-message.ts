@@ -24,6 +24,9 @@ module.exports = {
         where: {
           sessionId: sessionId,
           userId: parseInt(userId),
+          publishedAt: {
+            $notNull: true, // Ensures publishedAt is NOT null
+          },
         },
         orderBy: { timestamp: "asc" },
       });
