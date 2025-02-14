@@ -4,7 +4,7 @@ module.exports = ({ env }) => ({
   app: {
     keys: env.array("APP_KEYS"),
   },
-  url: env("PUBLIC_URL", "https://my-chat-be-seven.vercel.app"),
+  url: env("PUBLIC_URL", "https://mighty-butterfly-8e3687d1dc.strapiapp.com"),
   webhooks: {
     populateRelations: env.bool("WEBHOOKS_POPULATE_RELATIONS", false),
   },
