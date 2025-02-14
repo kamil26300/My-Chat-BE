@@ -1,27 +1,19 @@
 module.exports = [
-  "strapi::errors",
   {
     name: "strapi::security",
     config: {
-      contentSecurityPolicy: {
-        useDefaults: true,
-        directives: {
-          "connect-src": ["'self'", "https:", "http:", "ws:", "wss:"],
-          "img-src": ["'self'", "data:", "blob:", "https:", "http:"],
-          "media-src": ["'self'", "data:", "blob:", "https:", "http:"],
-          upgradeInsecureRequests: null,
-        },
-      },
+      contentSecurityPolicy: false,
       cors: {
         enabled: true,
-        origin: "https://my-chat-mz9q.onrender.com",
-        headers: ["*"], // Allow all headers
+        headers: "*",
+        origin: ["https://my-chat-mz9q.onrender.com", "http://localhost:5173"],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-        keepHeaderOnError: true,
         credentials: true,
+        maxAge: 86400,
       },
     },
   },
+  "strapi::errors",
   "strapi::cors",
   "strapi::poweredBy",
   "strapi::logger",
