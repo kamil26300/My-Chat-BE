@@ -6,40 +6,19 @@ module.exports = [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          "connect-src": [
-            "'self'",
-            "http:",
-            "https:",
-            "ws:",
-            "wss:",
-            "localhost:*",
-          ],
-          "img-src": [
-            "'self'",
-            "data:",
-            "blob:",
-            "http:",
-            "https:",
-            "localhost:*",
-          ],
-          "media-src": [
-            "'self'",
-            "data:",
-            "blob:",
-            "http:",
-            "https:",
-            "localhost:*",
-          ],
+          "connect-src": ["'self'", "https:", "http:", "ws:", "wss:"],
+          "img-src": ["'self'", "data:", "blob:", "https:", "http:"],
+          "media-src": ["'self'", "data:", "blob:", "https:", "http:"],
           upgradeInsecureRequests: null,
         },
       },
       cors: {
         enabled: true,
-        origin: ["http://localhost:5173", "https://my-chat-mz9q.onrender.com"],
-        credentials: true,
+        origin: ["https://my-chat-mz9q.onrender.com", "http://localhost:5173"], // Add your frontend URLs
+        headers: ["*"], // Allow all headers
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-        headers: ["Content-Type", "Authorization", "Origin", "Accept"],
         keepHeaderOnError: true,
+        credentials: true,
       },
     },
   },

@@ -3,7 +3,7 @@
 module.exports = async ({ strapi }) => {
   const io = require("socket.io")(strapi.server.httpServer, {
     cors: {
-      origin: ["http://localhost:5173", "https://my-chat-mz9q.onrender.com"],
+      origin: ['https://my-chat-mz9q.onrender.com', 'http://localhost:5173'],
       methods: ["GET", "POST"],
       allowedHeaders: ["Authorization", "Content-Type", "Origin", "Accept"],
       credentials: true,
