@@ -5,7 +5,13 @@ module.exports = async ({ strapi }) => {
     cors: {
       origin: ["https://my-chat-mz9q.onrender.com", "http://localhost:5173"],
       methods: ["GET", "POST", "OPTIONS"],
-      allowedHeaders: ["Authorization", "Content-Type", "Origin", "Accept", "Access-Control-Allow-Origin"],
+      allowedHeaders: [
+        "Authorization",
+        "Content-Type",
+        "Origin",
+        "Accept",
+        "Access-Control-Allow-Origin",
+      ],
       credentials: true,
       maxAge: 86400,
     },
@@ -46,11 +52,10 @@ module.exports = async ({ strapi }) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.user.username);
 
-    // In your backend socket handler
     socket.on("sendMessage", async (messageData) => {
       try {
         console.log("Received message:", messageData);
-        // Save user message
+
         const savedMessage = await strapi.entityService.create(
           "api::message.message",
           {
@@ -61,34 +66,39 @@ module.exports = async ({ strapi }) => {
           }
         );
 
-        // Emit saved message
         socket.emit("message", {
           ...savedMessage,
           isServerReply: false,
         });
 
-        // Create and emit server reply
-        const serverReply = await strapi.entityService.create(
-          "api::message.message",
-          {
-            data: {
-              content: messageData.content,
-              sessionId: messageData.sessionId,
-              userId: messageData.userId,
-              timestamp: new Date().toISOString(),
-              isServerReply: true,
-              publishedAt: new Date(),
-            },
-          }
-        );
+        console.log("User message saved and emitted:", savedMessage);
 
-        // Emit server reply after a short delay
-        setTimeout(() => {
-          socket.emit("message", {
-            ...serverReply,
-            isServerReply: true,
-          });
-        }, 1000);
+        setTimeout(async () => {
+          try {
+            const serverReply = await strapi.entityService.create(
+              "api::message.message",
+              {
+                data: {
+                  content: messageData.content,
+                  sessionId: messageData.sessionId,
+                  userId: messageData.userId,
+                  timestamp: new Date().toISOString(),
+                  isServerReply: true,
+                  publishedAt: new Date(),
+                },
+              }
+            );
+
+            socket.emit("message", {
+              ...serverReply,
+              isServerReply: true,
+            });
+
+            console.log("Server reply saved and emitted:", serverReply);
+          } catch (serverError) {
+            console.error("Error saving server reply:", serverError);
+          }
+        }, 2000);
       } catch (error) {
         console.error("Error handling message:", error);
         socket.emit("error", "Failed to process message");
