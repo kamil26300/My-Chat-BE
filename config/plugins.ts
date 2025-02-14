@@ -1,9 +1,15 @@
 module.exports = {
-  'users-permissions': {
+  "users-permissions": {
     config: {
       jwt: {
-        expiresIn: '7d',
+        expiresIn: "7d",
       },
+    },
+  },
+  settings: {
+    cors: {
+      enabled: true,
+      origin: ["https://my-chat-mz9q.onrender.com"],
     },
   },
 };

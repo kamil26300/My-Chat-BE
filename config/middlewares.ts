@@ -1,22 +1,14 @@
-module.exports = [
+export default [
+  "strapi::errors",
   {
-    name: "strapi::security",
+    name: "strapi::cors",
     config: {
-      contentSecurityPolicy: false,
-      cors: {
-        enabled: true,
-        headers: "*",
-        origin: ["https://my-chat-mz9q.onrender.com", "http://localhost:5173"],
-        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-        credentials: true,
-        maxAge: 86400,
-      },
+      enabled: true,
+      headers: "*",
+      origin: ["https://my-chat-mz9q.onrender.com"],
     },
   },
-  "strapi::errors",
-  "strapi::cors",
-  "strapi::poweredBy",
-  "strapi::logger",
+  "strapi::security",
   "strapi::query",
   "strapi::body",
   "strapi::session",
