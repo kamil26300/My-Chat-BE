@@ -2,15 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/config/server.js",
+      "src": "dist/src/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/config/server.js",
-      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "dest": "dist/src/index.ts",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
       "headers": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "https://my-chat-mz9q.onrender.com",
