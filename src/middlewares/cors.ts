@@ -12,7 +12,7 @@ module.exports = (config, { strapi }) => {
       );
       ctx.set(
         "Access-Control-Allow-Headers",
-        "Content-Type,Authorization,Origin,Accept"
+        "Content-Type,Authorization,Origin,Accept,Access-Control-Allow-Origin"
       );
       ctx.set("Access-Control-Allow-Credentials", "true");
       ctx.set("Access-Control-Max-Age", "86400");

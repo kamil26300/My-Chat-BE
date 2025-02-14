@@ -13,7 +13,7 @@ module.exports = ({ env }) => ({
     origin: ["https://my-chat-mz9q.onrender.com", "http://localhost:5173"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-    headers: ["Content-Type", "Authorization", "Origin", "Accept"],
+    headers: ["Content-Type", "Authorization", "Origin", "Accept", "Access-Control-Allow-Origin"],
     maxAge: 86400,
   },
 });

@@ -5,7 +5,7 @@ module.exports = async ({ strapi }) => {
     cors: {
       origin: ["https://my-chat-mz9q.onrender.com", "http://localhost:5173"],
       methods: ["GET", "POST", "OPTIONS"],
-      allowedHeaders: ["Authorization", "Content-Type", "Origin", "Accept"],
+      allowedHeaders: ["Authorization", "Content-Type", "Origin", "Accept", "Access-Control-Allow-Origin"],
       credentials: true,
       maxAge: 86400,
     },
