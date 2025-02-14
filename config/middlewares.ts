@@ -14,7 +14,7 @@ module.exports = [
       },
       cors: {
         enabled: true,
-        origin: ["https://my-chat-mz9q.onrender.com", "http://localhost:5173"], // Add your frontend URLs
+        origin: "https://my-chat-mz9q.onrender.com",
         headers: ["*"], // Allow all headers
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
         keepHeaderOnError: true,
